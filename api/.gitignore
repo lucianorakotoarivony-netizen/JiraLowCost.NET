@@ -1,0 +1,43 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.pdb
+*.cache
+*.vsp
+*.sln.docstates
+.vs/
+.vscode/
+.idea/
+
+# Packages NuGet
+packages/
+*.nupkg
+**/packages/*
+
+# Fichiers de configuration sensibles
+appsettings.Development.json
+appsettings.Production.json
+*.pfx
+*.pem
+*.key
+.env
+
+# Docker
+*.log
+docker-compose.override.yml
+
+# EF Core Migrations (optionnel, certains préfèrent les commiter)
+# Migrations/
+
+# Système
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Tests
+TestResults/
+*.trx
+*.coverage
+coverage.opencover.xml

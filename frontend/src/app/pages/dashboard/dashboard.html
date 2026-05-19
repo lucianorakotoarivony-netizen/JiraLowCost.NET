@@ -1,0 +1,31 @@
+<div class="dashboard">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2 class="logo">Jira Low-Cost</h2>
+      <p class="tagline">Jira janai, Jira Low-Cost da</p>
+    </div>
+
+    <nav>
+      <ul>
+        <li><a routerLink="taskitem">📋 Tâches</a></li>
+        <li><a routerLink="board">📌 Tableau</a></li>
+        <li><a routerLink="projects">📁 Projets</a></li>
+      </ul>
+    </nav>
+
+    <div class="user-section">
+      <div class="user-badge">
+        <div class="user-avatar">👤</div>
+        <div class="user-info">
+          <span class="user-name">{{ currentUser() }}</span>
+          <span class="user-role" [class]="currentUserRole()">{{ currentUserRole() }}</span>
+        </div>
+      </div>
+      <button class="logout-btn" (click)="auth.logout()">Se déconnecter</button>
+    </div>
+  </aside>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

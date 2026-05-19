@@ -1,0 +1,71 @@
+<!-- tasks.html -->
+<div class="tasks-container">
+  <h1>📋 Tâches</h1>
+<button class="filter-btn" [class.active]="activeFilter() === 'all'" (click)="setFilter('all')">
+  Toutes les tâches
+</button>
+<button class="filter-btn" [class.active]="activeFilter() === 'in_progress'" (click)="setFilter('in_progress')">
+  Mes tâches en cours
+</button>
+<button class="filter-btn" [class.active]="activeFilter() === 'pending'" (click)="setFilter('pending')">
+  Mes tâches assignées
+</button>
+<button class="filter-btn" [class.active]="activeFilter() === 'done'" (click)="setFilter('done')">
+  Mes tâches finies
+</button>
+<button class="filter-btn" [class.active]="activeFilter() === 'todo'" (click)="setFilter('todo')">
+  Tâches libres
+</button>
+  <!-- Loading -->
+  @if (!tasks().length && !errorStatus()) {
+    <div class="loading">Chargement des tâches...</div>
+  }
+
+  <!-- Error -->
+  @if (errorStatus()) {
+    <div class="error">
+      <p>{{ errorMessage() }}</p>
+      <button (click)="dataService.loadTaskItemList()">Réessayer</button>
+    </div>
+  }
+
+  <!-- Tasks Table -->
+  @if (tasks().length > 0) {
+    
+    <table class="tasks-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Titre</th>
+          <th>Description</th>
+          <th>Statut</th>
+          <th>Priorité</th>
+          <th>Difficulté</th>
+          <th>Assignée à</th>
+          <th>Créée le</th>
+          <th>Créée par</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (task of tasks(); track task.id) {
+          <tr>
+            <td>{{ task.id }}</td>
+            <td>{{ task.title }}</td>
+            <td>{{ task.description}}</td>
+            <td><span class="badge" [class]="task.status">{{ task.status | taskStatus }}</span></td>
+            <td>{{ task.priority | taskPriority}}</td>
+            <td>{{ task.difficulty }}</td>
+            <td>{{ task.assignedTo ?? 'Libre' }}</td>
+            <td>{{ task.createdAt | date:'medium':'UTC' }}</td>
+            <td>{{ task.createdBy }}</td>
+            <td>
+              <a [routerLink]="['/dashboard/tasks', task.id]" [queryParams]="activeFilter() ? { filter: activeFilter() } : {}" class="detail-link">Voir détails</a>
+            </td>
+            
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
+
