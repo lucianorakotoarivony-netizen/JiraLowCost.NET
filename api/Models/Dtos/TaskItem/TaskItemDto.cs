@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using JiraLowCost.api.Constants;
-using JiraLowCost.api.Models.Entities;
 
 namespace JiraLowCost.api.Models.Dtos.TaskItem;
 

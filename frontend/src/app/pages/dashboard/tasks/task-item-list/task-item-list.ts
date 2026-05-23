@@ -1,14 +1,16 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Data } from '../../Services/data';
-import { Auth } from '../../Services/auth';
+import { Data } from '../../../../Services/data';
+import { Auth } from '../../../../Services/auth';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { TaskStatusPipe } from '../../shared/pipes/task-status-pipe';
+import { TaskStatusPipe } from '../../../../shared/pipes/task-status-pipe';
 import { DatePipe } from '@angular/common';
-import { TaskPriorityPipe } from '../../shared/pipes/task-priority-pipe';
+import { TaskPriorityPipe } from '../../../../shared/pipes/task-priority-pipe';
+import { TaskDifficultyPipe } from '../../../../shared/pipes/task-difficulty-pipe';
+import { FILTER } from '../../../../../Constants/filter';
 
 @Component({
   selector: 'app-task-item-list',
-  imports: [RouterLink, TaskStatusPipe, DatePipe, TaskPriorityPipe],
+  imports: [RouterLink, TaskStatusPipe, DatePipe, TaskPriorityPipe, TaskDifficultyPipe],
   templateUrl: './task-item-list.html',
   styleUrl: './task-item-list.scss',
 })
@@ -17,6 +19,7 @@ export class TaskItemList implements OnInit{
   auth = inject(Auth);
   route = inject(ActivatedRoute);
   router = inject(Router);
+  filter = FILTER;
   tasks = this.dataService.taskItemListData;
   errorMessage = this.dataService.errorMessage;
   errorStatus = this.dataService.errorStatus;

@@ -1,19 +1,23 @@
 <!-- tasks.html -->
+<a routerLink="create" class="create-btn">
+  <span class="icon">➕</span>
+  <span>Nouvelle tâche</span>
+</a>
 <div class="tasks-container">
   <h1>📋 Tâches</h1>
-<button class="filter-btn" [class.active]="activeFilter() === 'all'" (click)="setFilter('all')">
+<button class="filter-btn" [class.active]="activeFilter() === filter.ALL" (click)="setFilter(filter.ALL)">
   Toutes les tâches
 </button>
-<button class="filter-btn" [class.active]="activeFilter() === 'in_progress'" (click)="setFilter('in_progress')">
+<button class="filter-btn" [class.active]="activeFilter() === filter.IN_PROGRESS" (click)="setFilter(filter.IN_PROGRESS)">
   Mes tâches en cours
 </button>
-<button class="filter-btn" [class.active]="activeFilter() === 'pending'" (click)="setFilter('pending')">
+<button class="filter-btn" [class.active]="activeFilter() === filter.PENDING" (click)="setFilter(filter.PENDING)">
   Mes tâches assignées
 </button>
-<button class="filter-btn" [class.active]="activeFilter() === 'done'" (click)="setFilter('done')">
+<button class="filter-btn" [class.active]="activeFilter() === filter.DONE" (click)="setFilter(filter.DONE)">
   Mes tâches finies
 </button>
-<button class="filter-btn" [class.active]="activeFilter() === 'todo'" (click)="setFilter('todo')">
+<button class="filter-btn" [class.active]="activeFilter() === filter.TODO" (click)="setFilter(filter.TODO)">
   Tâches libres
 </button>
   <!-- Loading -->
@@ -54,12 +58,12 @@
             <td>{{ task.description}}</td>
             <td><span class="badge" [class]="task.status">{{ task.status | taskStatus }}</span></td>
             <td>{{ task.priority | taskPriority}}</td>
-            <td>{{ task.difficulty }}</td>
+            <td>{{ task.difficulty | taskDifficulty}}</td>
             <td>{{ task.assignedTo ?? 'Libre' }}</td>
             <td>{{ task.createdAt | date:'medium':'UTC' }}</td>
             <td>{{ task.createdBy }}</td>
             <td>
-              <a [routerLink]="['/dashboard/tasks', task.id]" [queryParams]="activeFilter() ? { filter: activeFilter() } : {}" class="detail-link">Voir détails</a>
+              <a [routerLink]="['/dashboard/taskitem', task.id]" [queryParams]="activeFilter() ? { filter: activeFilter() } : {}" class="detail-link">Voir détails</a>
             </td>
             
           </tr>

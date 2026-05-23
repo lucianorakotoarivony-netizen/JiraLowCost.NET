@@ -5,10 +5,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TaskStatusPipe implements PipeTransform {
   private readonly labels : Record<string, string> = {
-    todo: "A faire",
-    in_progress: "En cours",
-    done: "Terminé",
-    pending:"En attente",
+    TODO: "A faire",
+    IN_PROGRESS: "En cours",
+    DONE: "Terminé",
+    PENDING:"En attente",
   };
   transform(value: string | null | undefined): string {
     if (!value) return "Inconnu";

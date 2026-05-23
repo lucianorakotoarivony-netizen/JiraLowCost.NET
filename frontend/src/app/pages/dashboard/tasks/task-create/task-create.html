@@ -1,0 +1,49 @@
+<div class="task-create-container">
+  <h1>Créer une tâche</h1>
+
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="title">Titre *</label>
+      <input id="title" formControlName="title" type="text" />
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" formControlName="description"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="priority">Priorité</label>
+      <select id="priority" formControlName="priority">
+        @for (priority of priorities; track priority) {
+      <option [value]="priority">{{priority | taskPriority}}</option>
+      }
+      </select>
+    </div>
+
+    <div class="form-group">
+  <label for="difficulty">Difficulté</label>
+  <select id="difficulty" formControlName="difficulty" (change)="onDifficultyChange()">
+    @for (difficulty of difficulties; track difficulty) {
+      <option [value]="difficulty">{{difficulty | taskDifficulty}}</option>
+    }
+  </select>
+</div>
+
+    <div class="form-group">
+  <label for="assignedToId">Assignée à</label>
+  <select id="assignedToId" formControlName="assignedToId" (change)="onAssigneeChange($any($event.target).value)">
+    <option value="">-- Libre --</option>
+    @for (user of users(); track user.id) {
+      <option [value]="user.id">{{ user.username }} ({{ user.role | roleUser}})</option>
+    }
+  </select>
+</div>
+
+    @if (errorStatus()) {
+      <div class="error">{{ errorMessage() }}</div>
+    }
+
+    <button type="submit" [disabled]="taskForm.invalid">Créer</button>
+  </form>
+</div>

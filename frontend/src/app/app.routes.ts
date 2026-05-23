@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth-guard';
-import { TaskItemList } from './pages/task-item-list/task-item-list';
 
 export const routes: Routes = [
     {
@@ -17,7 +16,15 @@ export const routes: Routes = [
         children: [
           {
             path: '',
-            loadComponent: () => import('./pages/task-item-list/task-item-list').then(m => m.TaskItemList)
+            loadComponent: () => import('./pages/dashboard/tasks/task-item-list/task-item-list').then(m => m.TaskItemList)
+          },
+          {
+            path: 'create',
+            loadComponent: () => import('./pages/dashboard/tasks/task-create/task-create').then(m => m.TaskCreate)
+          },
+          {
+            path:':id',
+            loadComponent:() => import('./pages/dashboard/tasks/task-item-detail/task-item-detail').then(m => m.TaskItemDetail)
           }
         ]
       },

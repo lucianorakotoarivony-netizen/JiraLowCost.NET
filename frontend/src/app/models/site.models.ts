@@ -16,3 +16,17 @@ export interface TaskItem{
     assignedTo: string | null,
     createdAt: string,
 }
+
+export interface CreateTaskItem{
+    title: string,
+    description: string,
+    status: string,
+    priority: string,
+    assignedToId: string,
+}
+
+export interface UserResponse{
+    id: string,
+    username: string,
+    role: string,
+}

@@ -1,0 +1,306 @@
+// Variables
+$bg: #f8fafc;
+$card-bg: #ffffff;
+$text: #1e293b;
+$text-light: #64748b;
+$border: #e2e8f0;
+$shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+$radius: 12px;
+
+// Status colors
+$todo: #e2e8f0;
+$todo-text: #475569;
+$in-progress: #dbeafe;
+$in-progress-text: #1e40af;
+$done: #dcfce7;
+$done-text: #166534;
+$pending: #fef3c7;
+$pending-text: #92400e;
+$canceled: #fee2e2;
+$canceled-text: #991b1b;
+
+.detail-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+// Navigation
+.top-nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 0 4px;
+}
+
+.left-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: $text-light;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 6px 0;
+  transition: color 0.2s;
+
+  &:hover { color: $text; }
+}
+
+.arrow-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.arrow-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: $card-bg;
+  color: $text;
+  text-decoration: none;
+  font-size: 1.2rem;
+  box-shadow: $shadow;
+  transition: all 0.2s;
+
+  &:hover {
+    background: $text;
+    color: white;
+  }
+}
+
+.nav-count {
+  font-size: 0.85rem;
+  color: $text-light;
+}
+
+// Card
+.detail-card {
+  background: $card-bg;
+  border-radius: $radius;
+  box-shadow: $shadow;
+  overflow: hidden;
+
+  &.skeleton { pointer-events: none; }
+}
+
+.detail-content {
+  padding: 32px;
+}
+
+// Header
+.header-section {
+  margin-bottom: 24px;
+
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 14px 0;
+    color: $text;
+    line-height: 1.3;
+  }
+}
+
+.badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+
+  &.todo { background: $todo; color: $todo-text; }
+  &.in_progress { background: $in-progress; color: $in-progress-text; }
+  &.done { background: $done; color: $done-text; }
+  &.pending { background: $pending; color: $pending-text; }
+  &.canceled { background: $canceled; color: $canceled-text; }
+
+  &.priority { background: #ede9fe; color: #5b21b6; }
+  &.difficulty { background: #fce7f3; color: #9d174d; }
+}
+
+// Content
+.content-section {
+  margin-bottom: 24px;
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-light;
+    margin-bottom: 10px;
+  }
+}
+
+.description-text {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: $text;
+}
+
+// Meta
+.meta-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 20px;
+  background: $bg;
+  border-radius: 10px;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meta-label {
+  font-size: 0.8rem;
+  color: $text-light;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.meta-value {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: $text;
+}
+
+// Actions
+.actions-section {
+  padding-top: 20px;
+  border-top: 1px solid $border;
+}
+
+.error-message {
+  background: #fef2f2;
+  color: #991b1b;
+  padding: 10px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+  border: 1px solid #fecaca;
+}
+
+.actions-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+// Buttons
+.action-btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &.take {
+    background: $in-progress;
+    color: $in-progress-text;
+    &:hover { background: #bfdbfe; }
+  }
+
+  &.finish {
+    background: $done;
+    color: $done-text;
+    &:hover { background: #bbf7d0; }
+  }
+
+  &.abandon {
+    background: $todo;
+    color: $todo-text;
+    &:hover { background: #cbd5e1; }
+  }
+
+  &.accept {
+    background: $done;
+    color: $done-text;
+    &:hover { background: #bbf7d0; }
+  }
+
+  &.decline {
+    background: $canceled;
+    color: $canceled-text;
+    &:hover { background: #fecaca; }
+  }
+}
+
+// Skeleton
+.skeleton-title {
+  height: 28px;
+  background: #e2e8f0;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  width: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-badges {
+  height: 24px;
+  background: #e2e8f0;
+  border-radius: 100px;
+  margin-bottom: 24px;
+  width: 180px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-line {
+  height: 14px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  animation: pulse 1.5s ease-in-out infinite;
+
+  &.short { width: 35%; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+// Error
+.error-wrapper-full {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.error-container {
+  .error-icon { font-size: 3rem; margin-bottom: 16px; }
+  h2 { font-size: 1.3rem; margin-bottom: 8px; color: $text; }
+  p { color: $text-light; margin-bottom: 20px; }
+}
+
+.retry-btn {
+  padding: 10px 24px;
+  background: $text;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover { background: #334155; }
+}

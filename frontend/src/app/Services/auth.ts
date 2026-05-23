@@ -14,6 +14,7 @@ export class Auth {
   isAuthenticated = signal<boolean>(!!localStorage.getItem("jwt_token"));
   currentUsername = signal<string | null>(this.getUsername());
   currentUserRole = signal<string | null>(this.getRole());
+  currentUserId = signal<string | null>(this.getId());
 
   login(username: string, password: string){
     return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login/`, {username, password});
@@ -57,6 +58,15 @@ export class Auth {
       return null;
     }
   }
-
-  
+  private getId(): string | null{
+    const token = this.getToken();
+    if (!token) return null;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.id
+      
+    }catch(err){
+      return null;
+    }
+  }
 }

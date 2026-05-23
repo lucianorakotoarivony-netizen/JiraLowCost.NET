@@ -1,13 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'taskPriority',
+  name: 'taskDifficulty',
 })
-export class TaskPriorityPipe implements PipeTransform {
+export class TaskDifficultyPipe implements PipeTransform {
   private readonly labels : Record<string, string> = {
-    LOW: "Faible",
-    MEDIUM: "Moyenne",
-    HIGH: "Haute",
+    LEAD: "Lead level",
+    SENIOR: "Senior level",
+    MID: "Mid level",
+    JUNIOR: "Junior level"
   };
   transform(value: string | null | undefined): string {
     if (!value) return "Inconnu";

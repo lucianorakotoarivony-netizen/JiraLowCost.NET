@@ -116,3 +116,31 @@
     background: #f1f5f9;
   }
 }
+
+.create-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #1a1a2e;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+
+  .icon {
+    font-size: 1.1rem;
+  }
+
+  &:hover {
+    background: #2a2a4e;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(26, 26, 46, 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}

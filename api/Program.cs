@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using JiraLowCost.api.Data;
-using JiraLowCost.api.Services;
+using JiraLowCost.api.Services.TaskItemService;
 using JiraLowCost.api.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using JiraLowCost.api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,7 @@ builder.Services.AddSwaggerGen();
 //Add service
 builder.Services.AddScoped < IAuthService, AuthService > ();
 builder.Services.AddScoped < ITaskItemService, TaskItemService >();
+builder.Services.AddScoped < IUserService, UserService>();
 
 
 

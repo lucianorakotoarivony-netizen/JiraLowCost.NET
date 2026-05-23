@@ -65,6 +65,7 @@ public class AuthService(UserManager<User> userManager, IConfiguration configura
             new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(ClaimTypes.Name, user.UserName!),
             new Claim("username", user.UserName!),
+            new Claim("role", user.Role),
             new Claim(ClaimTypes.Role, user.Role)
         ];
         SymmetricSecurityKey key = new (

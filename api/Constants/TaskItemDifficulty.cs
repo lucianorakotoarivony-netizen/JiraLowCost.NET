@@ -1,8 +1,7 @@
 namespace JiraLowCost.api.Constants;
 
-public static class UserRole
+public static class TaskItemDifficulty
 {
-    public const string PO = "PO";
     public const string LEAD = "LEAD";
     public const string SENIOR = "SENIOR";
     public const string MID = "MID";
