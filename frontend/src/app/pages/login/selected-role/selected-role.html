@@ -1,0 +1,22 @@
+@if(currentUserRole() === "LEAD"){
+<div class="role-select">
+  <div class="role-select-card">
+    <h1>Choisissez votre espace</h1>
+    <p class="greeting">Connecté en tant que <strong>{{ currentUser() }}</strong> {{currentUserRole()}}</p>
+    <p class="subtitle">Vous avez accès aux deux interfaces. Sélectionnez celle que vous voulez utiliser :</p>
+
+    <div class="cards">
+      <div class="card admin" (click)="selectedRole('admin')">
+        <span class="icon">🛡️</span>
+        <h2>Admin</h2>
+      </div>
+      <div class="card dev" (click)="selectedRole('dev')">
+        <span class="icon">💻</span>
+        <h2>Développeur</h2>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<router-outlet></router-outlet>

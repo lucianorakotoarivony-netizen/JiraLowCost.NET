@@ -6,40 +6,49 @@ using Microsoft.EntityFrameworkCore;
 namespace JiraLowCost.api.Services.TaskItemService;
 public partial class TaskItemService
 {
-    public async Task<List<TaskItemResponseDto>> GetAllTaskItemAsync(string UserId, string? filter = null)
+    public async Task<List<TaskItemResponseDto>> GetAllTaskItemAsync(string userId, string? filter = null, string? dashboard = null)
     {
-        User? user = await context.Users.FindAsync(UserId)
+        User? user = await context.Users.FindAsync(userId)
         ??
         throw new UnauthorizedAccessException(UnauthorizedAccessException);
 
         IQueryable<TaskItem> query = Query();
+        bool isAdmin = RoleAdmin.Contains(user.Role);
+        bool isDevDashboard = dashboard == "dev";
+        bool isLeadModeDev = isAdmin && isDevDashboard;
 
-        if (!Role.Contains(user.Role))
+        if (!isAdmin || isLeadModeDev)
+        {
+            query = query.Where(t =>
+                    t.Status == TaskItemStatus.TODO 
+                        ||
+                    t.AssignedToId == userId &&
+                    (t.Status == TaskItemStatus.IN_PROGRESS || t.Status == TaskItemStatus.PENDING)
+                        ||
+                        
+                    (t.Status == TaskItemStatus.DONE));
+        }
+
+        if (!string.IsNullOrEmpty(filter))
         {
             query = filter switch
             {
                 TaskItemStatus.TODO => query
                 .Where(t => t.Status == TaskItemStatus.TODO),
-                TaskItemStatus.PENDING => query
-                .Where(t =>
+
+                TaskItemStatus.PENDING => isAdmin && !isLeadModeDev ? query.Where(t => t.Status == TaskItemStatus.PENDING) : 
+                query.Where(t =>
                     t.Status == TaskItemStatus.PENDING
                         &&
-                    t.AssignedToId == UserId),
-                TaskItemStatus.IN_PROGRESS => query
-                .Where(t =>
+                    t.AssignedToId == userId),
+                TaskItemStatus.IN_PROGRESS => isAdmin && !isLeadModeDev ? query.Where(t => t.Status == TaskItemStatus.IN_PROGRESS):
+                query.Where(t =>
                     t.Status == TaskItemStatus.IN_PROGRESS
                         &&
-                    t.AssignedToId == UserId),
-                TaskItemStatus.DONE => query
-                .Where(t => t.Status == TaskItemStatus.DONE),
-                _ => query.Where(t =>
-                    t.Status == TaskItemStatus.TODO 
-                        ||
-                    (t.Status == TaskItemStatus.IN_PROGRESS && t.AssignedToId == UserId)
-                        ||
-                    (t.Status == TaskItemStatus.PENDING && t.AssignedToId == UserId)
-                        ||
-                    (t.Status == TaskItemStatus.DONE)),
+                    t.AssignedToId == userId),
+                TaskItemStatus.DONE => isAdmin && !isLeadModeDev ? query.Where(t => t.Status == TaskItemStatus.DONE) :
+                query.Where(t => t.Status == TaskItemStatus.DONE && t.AssignedToId == userId),
+                _ => query
             };
         }
         List<TaskItem> taskItem = await query.ToListAsync();
@@ -55,12 +64,13 @@ public partial class TaskItemService
 
         IQueryable<TaskItem> query = Query();
 
-        if (!Role.Contains(user.Role))
+        if (!RoleAdmin.Contains(user.Role))
         {
             query = query.Where(t =>
             t.Status == TaskItemStatus.TODO ||
-            (t.Status == TaskItemStatus.IN_PROGRESS && t.AssignedToId == userId) ||
-            (t.Status == TaskItemStatus.PENDING && t.AssignedToId == userId) ||
+            t.AssignedToId == userId &&
+            (t.Status == TaskItemStatus.IN_PROGRESS || t.Status == TaskItemStatus.PENDING)
+            ||
             (t.Status == TaskItemStatus.DONE)
         );
         }

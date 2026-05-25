@@ -1,8 +1,4 @@
 <!-- tasks.html -->
-<a routerLink="create" class="create-btn">
-  <span class="icon">➕</span>
-  <span>Nouvelle tâche</span>
-</a>
 <div class="tasks-container">
   <h1>📋 Tâches</h1>
 <button class="filter-btn" [class.active]="activeFilter() === filter.ALL" (click)="setFilter(filter.ALL)">
@@ -63,9 +59,8 @@
             <td>{{ task.createdAt | date:'medium':'UTC' }}</td>
             <td>{{ task.createdBy }}</td>
             <td>
-              <a [routerLink]="['/dashboard/taskitem', task.id]" [queryParams]="activeFilter() ? { filter: activeFilter() } : {}" class="detail-link">Voir détails</a>
+              <a [routerLink]="['/selected-role/dashboard-dev/taskitem', task.id]" [queryParams]="activeFilter() ? { filter: activeFilter() } : {}" class="detail-link">Voir détails</a>
             </td>
-            
           </tr>
         }
       </tbody>

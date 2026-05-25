@@ -1,0 +1,75 @@
+<!-- tasks.html -->
+ <a routerLink="create" class="create-btn">
+  <span class="icon">➕</span>
+  <span>Nouvelle tâche</span>
+</a>
+<div class="tasks-container">
+  <h1>📋 Tâches</h1>
+<button class="filter-btn" [class.active]="activeFilter() === filter.ALL" (click)="setFilter(filter.ALL)">
+  Toutes les tâches
+</button>
+<button class="filter-btn" [class.active]="activeFilter() === filter.IN_PROGRESS" (click)="setFilter(filter.IN_PROGRESS)">
+  Tâches en cours
+</button>
+<button class="filter-btn" [class.active]="activeFilter() === filter.PENDING" (click)="setFilter(filter.PENDING)">
+  Tâches assignées
+</button>
+<button class="filter-btn" [class.active]="activeFilter() === filter.DONE" (click)="setFilter(filter.DONE)">
+  Tâches finies
+</button>
+<button class="filter-btn" [class.active]="activeFilter() === filter.TODO" (click)="setFilter(filter.TODO)">
+  Tâches libres
+</button>
+  <!-- Loading -->
+  @if (!tasks().length && !errorStatus()) {
+    <div class="loading">Chargement des tâches...</div>
+  }
+
+  <!-- Error -->
+  @if (errorStatus()) {
+    <div class="error">
+      <p>{{ errorMessage() }}</p>
+      <button (click)="dataService.loadTaskItemList()">Réessayer</button>
+    </div>
+  }
+
+  <!-- Tasks Table -->
+  @if (tasks().length > 0) {
+    
+    <table class="tasks-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Titre</th>
+          <th>Description</th>
+          <th>Statut</th>
+          <th>Priorité</th>
+          <th>Difficulté</th>
+          <th>Assignée à</th>
+          <th>Créée le</th>
+          <th>Créée par</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (task of tasks(); track task.id) {
+          <tr>
+            <td>{{ task.id }}</td>
+            <td>{{ task.title }}</td>
+            <td>{{ task.description}}</td>
+            <td><span class="badge" [class]="task.status">{{ task.status | taskStatus }}</span></td>
+            <td>{{ task.priority | taskPriority}}</td>
+            <td>{{ task.difficulty | taskDifficulty}}</td>
+            <td>{{ task.assignedTo ?? 'Libre' }}</td>
+            <td>{{ task.createdAt | date:'medium':'UTC' }}</td>
+            <td>{{ task.createdBy }}</td>
+            <td>
+              <a [routerLink]="['/selected-role/dashboard-admin/taskitem', task.id]" [queryParams]="activeFilter() ? { filter: activeFilter() } : {}" class="detail-link">Voir détails</a>
+            </td>
+            
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
+

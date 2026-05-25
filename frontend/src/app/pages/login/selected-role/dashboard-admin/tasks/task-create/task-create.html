@@ -34,7 +34,7 @@
   <label for="assignedToId">Assignée à</label>
   <select id="assignedToId" formControlName="assignedToId" (change)="onAssigneeChange($any($event.target).value)">
     <option value="">-- Libre --</option>
-    @for (user of users(); track user.id) {
+    @for (user of usersAssignable(); track user.id) {
       <option [value]="user.id">{{ user.username }} ({{ user.role | roleUser}})</option>
     }
   </select>

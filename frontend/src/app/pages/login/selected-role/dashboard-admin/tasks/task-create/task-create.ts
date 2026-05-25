@@ -1,15 +1,14 @@
-import { Component, inject, OnInit, signal} from '@angular/core';
-import { Data } from '../../../../Services/data';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { TASKS_ITEM_PRIORITY } from '../../../../../Constants/task-item-priority';
-import { TASK_ITEM_DIFFICULTY } from '../../../../../Constants/task-item-difficulty';
-import { UserResponse } from '../../../../models/site.models';
-import { RoleUserPipe } from '../../../../shared/pipes/role-user-pipe';
-import { userKeyRole } from '../../../../../Constants/user-role';
-import { TaskDifficultyPipe } from '../../../../shared/pipes/task-difficulty-pipe';
-import { TaskPriorityPipe } from '../../../../shared/pipes/task-priority-pipe';
-
+import { Component, inject, OnInit, signal } from "@angular/core";
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { RoleUserPipe } from "../../../../../../shared/pipes/role-user-pipe";
+import { TaskDifficultyPipe } from "../../../../../../shared/pipes/task-difficulty-pipe";
+import { TaskPriorityPipe } from "../../../../../../shared/pipes/task-priority-pipe";
+import { Data } from "../../../../../../Services/data";
+import { Router } from "@angular/router";
+import { UserResponse } from "../../../../../../models/site.models";
+import { TASK_ITEM_DIFFICULTY } from "../../../../../../../Constants/task-item-difficulty";
+import { TASKS_ITEM_PRIORITY } from "../../../../../../../Constants/task-item-priority";
+import { USER_ROLE, userKeyRole } from "../../../../../../../Constants/user-role";
 
 
 @Component({
@@ -22,7 +21,7 @@ export class TaskCreate implements OnInit{
   dataService = inject(Data);
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  users = signal<UserResponse[]>([]);
+  usersAssignable = signal<UserResponse[]>([]);
   difficulties = Object.values(TASK_ITEM_DIFFICULTY);
   priorities = Object.values(TASKS_ITEM_PRIORITY);
   errorStatus = signal<boolean>(false);
@@ -40,7 +39,7 @@ export class TaskCreate implements OnInit{
     this.errorMessage.set(null);
     this.errorStatus.set(false);
     this.dataService.getUsers().subscribe({
-      next:(users) => this.users.set(users),
+      next:(users) => this.usersAssignable.set(users.filter(u => u.role !== USER_ROLE.PO)),
       error: (err) => {
         this.errorStatus.set(true);
         let message = err?.error && typeof err.error.error === "string" 
@@ -56,9 +55,8 @@ export class TaskCreate implements OnInit{
     if(!dto.assignedTo) delete dto.assignedTo;
     console.log(dto);
     this.dataService.createTaskItem(dto).subscribe({
-      next:() => this.router.navigate(['/dashboard/taskitem']),
+      next:() => this.router.navigate(['selected-role/dashboard-admin/taskitem']),
       error:(err) => {
-        console.log(err);
         this.errorStatus.set(true);
         let message = err?.error && typeof err.error === "string" 
         ? err.error : 'Une erreur est survenue. Veuillez réesayer.';
@@ -74,7 +72,7 @@ export class TaskCreate implements OnInit{
     return;
   }
 
-  const selectedUser = this.users().find(u => u.id === userId);
+  const selectedUser = this.usersAssignable().find(u => u.id === userId);
   if (selectedUser) {
     const roleToDifficulty: Partial<Record<userKeyRole, string>> = {
       JUNIOR: TASK_ITEM_DIFFICULTY.JUNIOR,
@@ -89,7 +87,7 @@ export class TaskCreate implements OnInit{
 }
 onDifficultyChange(){
   const userId = this.taskForm.get('assignedToId')?.value;
-  const user = this.users().find(u => u.id === userId);
+  const user = this.usersAssignable().find(u => u.id === userId && u.role);
   const difficulty = this.taskForm.get('difficulty')?.value;
   const difficultyKey = Object
     .keys(TASK_ITEM_DIFFICULTY)

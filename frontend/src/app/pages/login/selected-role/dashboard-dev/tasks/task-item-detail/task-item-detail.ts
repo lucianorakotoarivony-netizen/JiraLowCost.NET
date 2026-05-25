@@ -1,16 +1,17 @@
-import { Component, inject, } from '@angular/core';
-import { BaseDetail } from '../../../../../base-detail';
-import { TaskItem } from '../../../../models/site.models';
-import { DatePipe } from '@angular/common';
-import { TaskStatusPipe } from '../../../../shared/pipes/task-status-pipe';
-import { RouterLink } from '@angular/router';
-import { TaskPriorityPipe } from '../../../../shared/pipes/task-priority-pipe';
-import { RoleUserPipe } from '../../../../shared/pipes/role-user-pipe';
-import { TaskDifficultyPipe } from '../../../../shared/pipes/task-difficulty-pipe';
-import { Workflows } from '../../../../Services/workflows';
-import { Observable, take } from 'rxjs';
-import { Auth } from '../../../../Services/auth';
-import { TASK_ITEM_STATUS } from '../../../../../Constants/task-item-status';
+import { DatePipe } from "@angular/common";
+import { RouterLink } from "@angular/router";
+import { TaskStatusPipe } from "../../../../../../shared/pipes/task-status-pipe";
+import { TaskPriorityPipe } from "../../../../../../shared/pipes/task-priority-pipe";
+import { RoleUserPipe } from "../../../../../../shared/pipes/role-user-pipe";
+import { TaskDifficultyPipe } from "../../../../../../shared/pipes/task-difficulty-pipe";
+import { BaseDetail } from "../../../../../../../base-detail";
+import { TaskItem } from "../../../../../../models/site.models";
+import { Auth } from "../../../../../../Services/auth";
+import { Component, inject } from "@angular/core";
+import { TASK_ITEM_STATUS } from "../../../../../../../Constants/task-item-status";
+import { Workflows } from "../../../../../../Services/workflows";
+import { Observable, take } from "rxjs";
+
 
 @Component({
   selector: 'app-task-item-detail',
@@ -26,7 +27,7 @@ export class TaskItemDetail extends BaseDetail<TaskItem>{
   currentUserRole = this.auth.currentUserRole();
   currentUsername = this.auth.currentUsername();
   workflow = inject(Workflows);
-  backRoute = 'dashboard/taskitem';
+  backRoute = 'selected-role/dashboard-dev/taskitem';
 
   loadDetail(id: string): void {
     this.dataService.loadTaskItemDetail(id);

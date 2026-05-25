@@ -1,0 +1,77 @@
+.role-select {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  background: linear-gradient(135deg, #1a1a2e 0%, #2a2a4e 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.role-select-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 100%;
+  width: 95%;
+}
+
+.greeting {
+  font-size: 0.85rem;
+  color: #e0e0e0;
+  margin: 0;
+  white-space: nowrap;
+
+  strong {
+    color: white;
+    font-weight: 600;
+  }
+}
+
+.cards {
+  display: flex;
+  gap: 8px;
+}
+
+.card {
+  padding: 6px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.8rem;
+  color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  &.admin:hover {
+    background: rgba(59, 130, 246, 0.3);
+    border-color: #3b82f6;
+  }
+
+  &.dev:hover {
+    background: rgba(34, 197, 94, 0.3);
+    border-color: #22c55e;
+  }
+}
+
+.icon {
+  font-size: 1rem;
+}
+
+h2 {
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin: 0;
+  color: inherit;
+}

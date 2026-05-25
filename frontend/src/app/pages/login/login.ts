@@ -21,7 +21,6 @@ export class Login {
       next:(response) => this.auth.saveSession(response),
       error:(err) => {
         this.errorStatus.set(true);
-        console.log(err.error);
         this.errorMessage.set(err?.error?.message || "Une erreur est survenue")
       }
     })

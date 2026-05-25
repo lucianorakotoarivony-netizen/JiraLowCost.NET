@@ -23,10 +23,8 @@ export class Data {
     this.http.get<T>(`${this.apiUrl}/${url}`, {params}).subscribe({
       next: (data) => {
         target.set(data);
-        console.log(data);
       },
       error: (err) => {
-        console.log(err);
         this.errorStatus.set(true);
         let message = err?.error && typeof err.error.message === "string" 
         ? err.error.message : 'Une erreur est survenue. Veuillez réesayer.';
@@ -42,12 +40,18 @@ export class Data {
   getUsers(): Observable<UserResponse[]>{
     return this.http.get<UserResponse[]>(`${this.apiUrl}/user`)
   }
+  
   loadTaskItemList(filter?: string): void{
     const params: Record<string, string> = {};
-    if (filter) params['filter']=filter;
+    if (filter) params['filter'] = filter;
     this.fetchAndSetData<TaskItem[]>("taskitem", this.taskItemListData, [], params);
   }
   loadTaskItemDetail(id: string): void{
     this.fetchAndSetData<TaskItem>(`taskitem/${id}`, this.taskItemDetailData, null);
   }
+  loadTasksForDev(filter?: string): void {
+  const params: Record<string, string> = { dashboard: 'dev' };
+  if (filter) params['filter'] = filter;
+  this.fetchAndSetData<TaskItem[]>('taskitem', this.taskItemListData, [], params);
+}
 }

@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { USER_ROLE } from '../../../Constants/user-role';
 
 @Pipe({
   name: 'roleUser',

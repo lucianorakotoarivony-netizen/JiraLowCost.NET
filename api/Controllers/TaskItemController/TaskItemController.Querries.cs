@@ -6,12 +6,12 @@ public partial class TaskItemController
 {
 
     [HttpGet]
-    public async Task<ActionResult<List<TaskItemResponseDto>>> GetAllTaskItem([FromQuery] string? filter)
+    public async Task<ActionResult<List<TaskItemResponseDto>>> GetAllTaskItem([FromQuery] string? filter, string? dashboard)
     {
         if(!ModelState.IsValid) return BadRequest(ModelState);
         string? UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(UserId)) return Unauthorized(UnauthorizedAccessException);
-        List<TaskItemResponseDto> taskItem = await taskItemService.GetAllTaskItemAsync(UserId, filter);
+        List<TaskItemResponseDto> taskItem = await taskItemService.GetAllTaskItemAsync(UserId, filter, dashboard);
         return Ok(taskItem);
     }
     [HttpGet("{id}")]

@@ -1,0 +1,98 @@
+<!-- task-detail.html -->
+<div class="detail-wrapper">
+  <!-- Barre de navigation -->
+  <div class="top-nav-bar">
+    <div class="left-nav">
+      <button class="back-btn" (click)="goBack()">
+        <span class="icon">←</span> Retour aux tâches
+      </button>
+      <div class="arrow-nav">
+        @if (prev(); as prev) {
+          <a [routerLink]="['/selected-role/dashboard-dev/taskitem', prev.id]" class="arrow-btn" title="Précédent">‹</a>
+        }
+        @if (next(); as next) {
+          <a [routerLink]="['/selected-role/dashboard-dev/taskitem', next.id]" class="arrow-btn" title="Suivant">›</a>
+        }
+      </div>
+    </div>
+    <span class="nav-count">{{ currentIndex() + 1 }} / {{ listData().length }}</span>
+  </div>
+
+  @if (detailData(); as task) {
+    <div class="detail-card">
+      <div class="detail-content">
+        <!-- En-tête -->
+        <div class="header-section">
+          <h1>{{ task.title }}</h1>
+          <div class="badges">
+            <span class="badge" [class]="task.status">{{ task.status | taskStatus }}</span>
+            <span class="badge priority">{{ task.priority | taskPriority}}</span>
+            <span class="badge difficulty">{{ task.difficulty | taskDifficulty}}</span>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="content-section">
+          <h3>Description</h3>
+          <p class="description-text">{{ task.description || 'Aucune description.' }}</p>
+        </div>
+
+        <!-- Métadonnées -->
+        <div class="meta-section">
+          <div class="meta-item">
+            <span class="meta-label">Assignée à</span>
+            <span class="meta-value">{{ task.assignedTo | roleUser }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Créée par</span>
+            <span class="meta-value">{{ task.createdBy }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Créée le</span>
+            <span class="meta-value">{{ task.createdAt | date:'medium':'UTC' }}</span>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions-section">
+          @if (errorStatus()) {
+            <div class="error-message">{{ errorMessage() }}</div>
+          }
+
+          <div class="actions-buttons">
+            @if (task.status === taskStatus.TODO && task.assignedTo === null && task.difficulty === currentUserRole) {
+              <button class="action-btn take" (click)="takeTask(task.id)">Prendre</button>
+            }
+              @if(task.status === taskStatus.IN_PROGRESS && task.assignedTo === currentUsername) {
+                <button class="action-btn finish" (click)="finishTask(task.id)">Terminer</button>
+                <button class="action-btn abandon" (click)="abandonTask(task.id)">Abandonner</button>
+          }
+            @if (task.status === taskStatus.PENDING && task.assignedTo === currentUsername) {
+              <button class="action-btn accept" (click)="acceptTask(task.id)">Accepter</button>
+              <button class="action-btn decline" (click)="declineTask(task.id)">Décliner</button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else if (dataService.errorStatus()) {
+    <div class="error-wrapper-full">
+      <div class="error-container">
+        <div class="error-icon">⚠️</div>
+        <h2>Tâche introuvable</h2>
+        <p>{{ dataService.errorMessage() }}</p>
+        <button (click)="retryLoad()" class="retry-btn">Réessayer</button>
+      </div>
+    </div>
+  } @else {
+    <!-- Skeleton -->
+    <div class="detail-card skeleton">
+      <div class="detail-content">
+        <div class="skeleton-title"></div>
+        <div class="skeleton-badges"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line short"></div>
+      </div>
+    </div>
+  }
+</div>

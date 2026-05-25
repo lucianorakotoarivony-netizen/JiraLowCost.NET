@@ -9,7 +9,7 @@ namespace JiraLowCost.api.Services.TaskItemService;
 
 public partial class TaskItemService(ApplicationDbContext context) : ITaskItemService
 {
-    readonly string [] Role = [UserRole.PO, UserRole.LEAD];
+    readonly string [] RoleAdmin = [UserRole.PO, UserRole.LEAD];
 
     readonly string UnauthorizedAccessException = "Vous n'avez pas le droit d'acceder à ses ressources.";
 

@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
-import { AuthResponse } from '../models/site.models';
+import { AuthResponse, RegisterDto } from '../models/site.models';
+import { RoleAdmin, RoleDev } from '../../Constants/user-role';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +17,22 @@ export class Auth {
   currentUserRole = signal<string | null>(this.getRole());
   currentUserId = signal<string | null>(this.getId());
 
+  CheckRole(userRole: string): string | null{
+    if (RoleAdmin.includes(userRole) && !RoleDev.includes(userRole)){
+      return "/dashboard-admin";
+    } else if (!RoleAdmin.includes(userRole)){
+      return "/dashboard-dev";
+    }else{
+      return null;
+    }
+  }
+  
   login(username: string, password: string){
     return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login/`, {username, password});
+  }
+
+  register(dto: RegisterDto){
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/register/`, dto);
   }
 
   saveSession(response: AuthResponse): void{
@@ -25,7 +40,14 @@ export class Auth {
     this.isAuthenticated.set(true);
     this.currentUsername.set(response.username);
     this.currentUserRole.set(response.role);
-    this.router.navigate(['/dashboard']);
+    const path = this.CheckRole(this.currentUserRole()!) // Arriver ici on est certains que le guard principal à donner son accord donc le rôle ne sera jamais null
+    console.log(path);
+    if (path !== null){
+      this.router.navigate([`/selected-role/${path}/taskitem`]);  
+    } else{
+      this.router.navigate(["/selected-role/taskitem"]);
+    }
+    
   }
 
   logout(){

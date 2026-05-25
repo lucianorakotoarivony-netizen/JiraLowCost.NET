@@ -12,7 +12,7 @@ public partial class TaskItemController
         if(!ModelState.IsValid) return BadRequest(ModelState);
         string? UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         string? CurrentUserRole = User.FindFirstValue(ClaimTypes.Role);
-        if (string.IsNullOrEmpty(UserId) || !Role.Contains(CurrentUserRole)) return Unauthorized(UnauthorizedOperationException);
+        if (string.IsNullOrEmpty(UserId) || !RoleAdmin.Contains(CurrentUserRole)) return Unauthorized(UnauthorizedOperationException);
         TaskItemResponseDto taskItem = await taskItemService.CreateTaskItemAsync(dto, UserId);
         return Ok(taskItem);
     }

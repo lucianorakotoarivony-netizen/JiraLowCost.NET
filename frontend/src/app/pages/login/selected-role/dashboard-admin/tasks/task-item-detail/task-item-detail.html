@@ -8,10 +8,10 @@
       </button>
       <div class="arrow-nav">
         @if (prev(); as prev) {
-          <a [routerLink]="['/dashboard/taskitem', prev.id]" class="arrow-btn" title="Précédent">‹</a>
+          <a [routerLink]="['/selected-role/dashboard-admin/taskitem', prev.id]" class="arrow-btn" title="Précédent">‹</a>
         }
         @if (next(); as next) {
-          <a [routerLink]="['/dashboard/taskitem', next.id]" class="arrow-btn" title="Suivant">›</a>
+          <a [routerLink]="['/selected-role/dashboard-admin/taskitem', next.id]" class="arrow-btn" title="Suivant">›</a>
         }
       </div>
     </div>
@@ -96,3 +96,4 @@
     </div>
   }
 </div>
+

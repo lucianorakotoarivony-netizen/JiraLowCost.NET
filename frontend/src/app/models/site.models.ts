@@ -5,6 +5,13 @@ export interface AuthResponse{
     role: string
 }
 
+export interface RegisterDto{
+    email: string,
+    username: string,
+    role: string,
+    password: string,
+}
+
 export interface TaskItem{
     id: number,
     title: string,

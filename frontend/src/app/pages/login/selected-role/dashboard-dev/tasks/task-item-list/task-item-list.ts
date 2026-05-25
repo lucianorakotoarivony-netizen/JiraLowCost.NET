@@ -1,12 +1,14 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { Data } from '../../../../Services/data';
-import { Auth } from '../../../../Services/auth';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { TaskStatusPipe } from '../../../../shared/pipes/task-status-pipe';
-import { DatePipe } from '@angular/common';
-import { TaskPriorityPipe } from '../../../../shared/pipes/task-priority-pipe';
-import { TaskDifficultyPipe } from '../../../../shared/pipes/task-difficulty-pipe';
-import { FILTER } from '../../../../../Constants/filter';
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { TaskStatusPipe } from "../../../../../../shared/pipes/task-status-pipe";
+import { DatePipe } from "@angular/common";
+import { TaskPriorityPipe } from "../../../../../../shared/pipes/task-priority-pipe";
+import { TaskDifficultyPipe } from "../../../../../../shared/pipes/task-difficulty-pipe";
+import { Component, inject, OnInit, signal } from "@angular/core";
+import { Data } from "../../../../../../Services/data";
+import { Auth } from "../../../../../../Services/auth";
+import { FILTER } from "../../../../../../../Constants/filter";
+import { USER_ROLE } from "../../../../../../../Constants/user-role";
+
 
 @Component({
   selector: 'app-task-item-list',
@@ -20,13 +22,16 @@ export class TaskItemList implements OnInit{
   route = inject(ActivatedRoute);
   router = inject(Router);
   filter = FILTER;
+  userRole = this.auth.currentUserRole;
   tasks = this.dataService.taskItemListData;
   errorMessage = this.dataService.errorMessage;
   errorStatus = this.dataService.errorStatus;
   activeFilter = signal<string | null>(null);
+
   ngOnInit(): void {
     this.route.queryParamMap.subscribe(params => {
       const filter = params.get('filter');
+      this.userRole() === "LEAD" ? this.dataService.loadTasksForLeadModeDev(filter ?? undefined) :
       this.dataService.loadTaskItemList(filter ?? undefined);
     });
   }
@@ -37,6 +42,7 @@ export class TaskItemList implements OnInit{
       queryParamsHandling:'merge',
       replaceUrl: true,
     });
+    this.userRole() === USER_ROLE.LEAD ? this.dataService.loadTasksForLeadModeDev(filter):
     this.dataService.loadTaskItemList(filter);
   }
 }
